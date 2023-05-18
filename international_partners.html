@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>International Cooperation Partners</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+	 <!-- Make sure you put this AFTER Leaflet's CSS -->
+   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+	 
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 600px;
+			width: 800px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+</head>
+
+  <h1>International Cooperations</h1>
+
+  
+  <div id="map" style="width: 800px; height: 600px;">></div>
+  
+  <script>
+		// Initialize the map
+	var myMap = L.map('map').setView([0.5413,25.9158], 1);
+
+	// Add the tile layer
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	  maxZoom: 19,
+	  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(myMap);
+
+	// Define the partners by categories
+	var partners = [
+	  {
+		name: 'Universidad Técnica Particular de Loja',
+		latlng: [-4.0106, -79.2119],
+		category: 'Universities',
+		link: 'https://www.utpl.edu.ec/',
+		project: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
+		news: '',
+		abstract: 'The Universidad Técnica Particular de LojaPartner is a leading institution in the field of...'
+	  },
+	  {
+		name: 'Escuela Politécnica Nacional',
+		latlng: [-0.2108, -78.4894],
+		category: 'Universities',
+		link: 'https://www.epn.edu.ec./',
+		project: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
+		news: '',
+		abstract: 'The Escuela Politécnica Nacional is an innovative university ...'
+	  },
+	  {
+		name: 'National University Toribio Rodríguez de Mendoza ',
+		latlng: [-6.2255, -77.8696],
+		category: 'Universities',
+		link: 'https://www.untrm.edu.pe/en/',
+		project: '',
+		news: 'https://www.untrm.edu.pe/es/noticias/3314-untrm-entrega-distincion-de-docente-honorario-a-reconocidos-investigadores-de-alemania-y-japon.html',
+		abstract: 'The National University Toribio Rodríguez de MendozaPartner is a respected research institution that focuses on...'
+	  },
+	  {
+		name: 'Universidad de la República (Udelar) in Montevideo',
+		latlng: [-34.918813, -56.168550],
+		category: 'Universities',
+		link: 'https://udelar.edu.uy/portal/',
+		project: 'biodiversidad.fcien.edu.uy',
+		news: '',
+		abstract: 'We cooperate with the Grupo Biodiversidad y Ecología de la Conservación at the Instituto de Ecología y Ciencias Ambientales'
+	  },
+	  {
+		name: 'Centro de Investigación y Extensión Forestal Andino Patagónico(CIEFAP)',
+		latlng: [-42.915198, -71.322221],
+		category: 'Universities',
+		link: 'http://www.ciefap.org.ar/',
+		project: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
+		news: 'https://diario.uach.cl/proyecto-klimnem-busca-involucrar-academicos-de-la-uach-en-el-manejo-sustentable-de-bosques/',
+		abstract: 'Centro de Investigación y Extensión Forestal Andino Patagónico(CIEFAP)'
+	  }
+	];
+
+	// Define the categories
+	var categories = ['Research Institutions', 'Reasearch Projects', 'Universities'];
+
+	// Create a marker for each partner and add it to the corresponding category layer
+	var categoryLayers = {};
+	categories.forEach(function(category) {
+	  var layer = L.layerGroup().addTo(myMap);
+	  categoryLayers[category] = layer;
+	});
+	
+	// Add the popup text
+	partners.forEach(function(partner) {
+	  var marker = L.marker(partner.latlng);
+	  marker.bindPopup('<a href="' + partner.link + '" target="_blank">' + partner.name + '</a><br>' + partner.abstract  +'<br>Projects:'+'<a href="' + partner.project + '" target="_blank">' + partner.project + '</a><br/>');
+	  categoryLayers[partner.category].addLayer(marker);
+	});
+
+	// Add a layer control to the map to allow switching between categories
+	L.control.layers(null, categoryLayers, {
+	  collapsed: false
+	}).addTo(myMap);
+
+	// Add a filter to only display markers of selected categories
+	var filter = document.getElementById('filter');
+	filter.addEventListener('change', function() {
+	  var selectedCategory = this.value;
+	  if (selectedCategory === 'All Categories') {
+		categories.forEach(function(category) {
+		  myMap.addLayer(categoryLayers[category]);
+		});
+	  } else {
+		categories.forEach(function(category) {
+		  if (category === selectedCategory) {
+			myMap.addLayer(categoryLayers[category]);
+		  } else {
+			myMap.removeLayer(categoryLayers[category]);
+		  }
+		});
+	  }
+	});
+	  
+  
+  </script>
+</body>
+</html>
