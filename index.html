@@ -20,11 +20,18 @@
 			margin: 0;
 		}
 		.leaflet-container {
-			height: 600px;
-			width: 800px;
+			height: 750px;
+			width: 1000px;
 			max-width: 100%;
 			max-height: 100%;
 		}
+	  table,
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
 	</style>
 </head>
 
@@ -32,7 +39,7 @@
  
 
   
-  <div id="map" style="width: 800px; height: 600px;">></div>
+  <div id="map" style="width: 1000px; height: 750px;">></div>
   
   <script>
 		// Initialize the map
@@ -49,57 +56,62 @@
 	  {
 		name: 'Universidad Técnica Particular de Loja',
 		latlng: [-4.0106, -79.2119],
-		category: 'Universities',
+		category: 'University',
 		contact: 'Prof. Helge Walentowski', 
 		link: 'https://www.utpl.edu.ec/',
-		project: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
+		project_name: 'Linktrait',
+		project_link: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
 		news: '',
 		abstract: 'The Universidad Técnica Particular de LojaPartner is a leading institution in the field of...'
 	  },
 	  {
 		name: 'Escuela Politécnica Nacional',
 		latlng: [-0.2108, -78.4894],
-		category: 'Universities',
+		category: 'University',
 		contact: 'Prof. Helge Walentowski', 
 		link: 'https://www.epn.edu.ec./',
-		project: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
+		project_name: 'Linktrait',
+		project_link: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
 		news: '',
 		abstract: 'The Escuela Politécnica Nacional is an innovative university ...'
 	  },
 	  {
 		name: 'National University Toribio Rodríguez de Mendoza ',
 		latlng: [-6.2255, -77.8696],
-		category: 'Universities',
+		category: 'University',
 		contact: 'Prof. Helge Walentowski',
 		link: 'https://www.untrm.edu.pe/en/',
-		project: '',
+		project_name: '',
+		project_link: '',
 		news: 'https://www.untrm.edu.pe/es/noticias/3314-untrm-entrega-distincion-de-docente-honorario-a-reconocidos-investigadores-de-alemania-y-japon.html',
 		abstract: 'The National University Toribio Rodríguez de MendozaPartner is a respected research institution that focuses on...'
 	  },
 	  {
 		name: 'Universidad de la República (Udelar) in Montevideo',
 		latlng: [-34.918813, -56.168550],
-		category: 'Universities',
+		category: 'University',
 		contact: 'Prof. Helge Walentowski',
 		link: 'https://udelar.edu.uy/portal/',
-		project: 'biodiversidad.fcien.edu.uy',
+		project_name: 'Grupo BEC',
+		project_link: 'biodiversidad.fcien.edu.uy',
 		news: '',
 		abstract: 'We cooperate with the Grupo Biodiversidad y Ecología de la Conservación at the Instituto de Ecología y Ciencias Ambientales'
 	  },
 	  {
 		name: 'Centro de Investigación y Extensión Forestal Andino Patagónico(CIEFAP)',
 		latlng: [-42.915198, -71.322221],
-		category: 'Universities',
+		category: 'Research Institution',
 		contact: 'Prof. Helge Walentowski',
 		link: 'http://www.ciefap.org.ar/',
-		project: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
+		project_name: 'Linktrait',
+		project_link: 'https://www.hawk.de/de/forschung/forschungsprojekte/linktrait',
 		news: 'https://diario.uach.cl/proyecto-klimnem-busca-involucrar-academicos-de-la-uach-en-el-manejo-sustentable-de-bosques/',
 		abstract: 'Centro de Investigación y Extensión Forestal Andino Patagónico(CIEFAP)'
 	  }
 	];
 
 	// Define the categories
-	var categories = ['Research Institutions', 'Reasearch Projects', 'Universities'];
+	var categories = ['Research Institution', 'Reasearch Project', 'University'];
 
 	// Create a marker for each partner and add it to the corresponding category layer
 	var categoryLayers = {};
@@ -111,7 +123,16 @@
 	// Add the popup text
 	partners.forEach(function(partner) {
 	  var marker = L.marker(partner.latlng);
-	  marker.bindPopup('<a href="' + partner.link + '" target="_blank">' + partner.name + '</a><br>' + partner.abstract  +'<br>Projects:'+'<a href="' + partner.project + '" target="_blank">' + partner.project + '</a><br/>');
+	  // marker.bindPopup('<a href="' + partner.link + '" target="_blank">' + partner.name + '</a><br>' + partner.abstract  +'<br>Projects:'+'<a href="' + partner.project + '" target="_blank">' + partner.project + '</a><br/>');
+	   marker.bindPopup('<table border=1> <tr><td> Partner Organisation </td> <td>' + '<a href="' 		+ partner.link 			+ '" target="_blank">' + partner.name + 			    '</td></tr>' +
+										 '<tr><td> Abstract			 </td> <td>' 	+ partner.abstract	+ 												  					'</td></tr>' +
+										 '<tr><td> Project 			 </td> <td>' 	+ '<a href="' 		+ partner.project_link + '" target="_blank">' + partner.project_name + 	'</td></tr>' +
+										 '<tr><td> News 			 </td> <td>' 	+ '<a href="' 		+ partner.news + '" target="_blank">' + 'Media' + 			 			'</td></tr>' +
+										 '<tr><td> Contact Person 	 </td> <td>' 	+ partner.contact 	+ 												  					'</td></tr>' +
+						'</table>');
+	   categoryLayers[partner.category].addLayer(marker);
+	});
+
 	// Add a layer control to the map to allow switching between categories
 	L.control.layers(null, categoryLayers, {
 	  collapsed: false
