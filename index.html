@@ -111,12 +111,7 @@
 	// Add the popup text
 	partners.forEach(function(partner) {
 	  var marker = L.marker(partner.latlng);
-	  // marker.bindPopup('<a href="' + partner.link + '" target="_blank">' + partner.name + '</a><br>' + partner.abstract  +'<br>Projects:'+'<a href="' + partner.project + '" target="_blank">' + partner.project + '</a><br/>');
-	   marker.bindPopup('<table>
-				<tr> <td> Partner Organisation <td> <td>' + partner.name + '</tr> </table>');
-	   categoryLayers[partner.category].addLayer(marker);
-	});
-
+	  marker.bindPopup('<a href="' + partner.link + '" target="_blank">' + partner.name + '</a><br>' + partner.abstract  +'<br>Projects:'+'<a href="' + partner.project + '" target="_blank">' + partner.project + '</a><br/>');
 	// Add a layer control to the map to allow switching between categories
 	L.control.layers(null, categoryLayers, {
 	  collapsed: false
